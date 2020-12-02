@@ -116,7 +116,7 @@ true
 
 将出现其它异常。
 
-说明将sql.errNoRows往上抛可以保留error的相关信息，如果在底层是sql.errNoRows，往上抛后也同样是sql.errNoRows。
+**结论：将sql.errNoRows往上抛可以保留error的相关信息，如果在底层是sql.errNoRows，往上抛后也同样是sql.errNoRows。**
 
 ##    5.3 问题二，既然往上抛后依然能保留sql.errNoRows属性，还有没有必要对sql.errNoRows进行Wrap。
 **答案是，不进行Wrap也可以。**     
