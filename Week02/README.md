@@ -1,7 +1,9 @@
-#1、问题:
+1、问题:
+=====
 我们在数据库操作的时候，比如dao层中当遇到一个sql.ErrNoRows时，是否应该Wrap这个error，抛给上层。为什么，应该怎么做请写出代码。
 
-#2、ErrNoRows的理解
+2、ErrNoRows的理解
+=====
 ##（1）根据官方文档库
 ErrNoRows is returned by Scan when QueryRow doesn't return a row. In such a case, QueryRow returns a placeholder Row value that defers this error until a Scan.
 
