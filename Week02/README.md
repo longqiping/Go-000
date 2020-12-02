@@ -119,7 +119,7 @@ true
 说明将sql.errNoRows往上抛可以保留error的相关信息，如果在底层是sql.errNoRows，往上抛后也同样是sql.errNoRows。
 
 ##    5.3 问题二，既然往上抛后依然能保留sql.errNoRows属性，还有没有必要对sql.errNoRows进行Wrap。
-*答案是，不进行Wrap也可以。*     
+**答案是，不进行Wrap也可以。**     
 由于Db.QueryRow不存在panic的问题，所以不需要从panic中recover，因此只需要向包的调用者返回error。   
 
 但是如果要附带其它信息，可以用结构体    
