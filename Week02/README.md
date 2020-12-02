@@ -4,7 +4,8 @@
 
 2、ErrNoRows的理解
 =====
-##（1）根据官方文档库
+## （1）根据官方文档库
+
 ErrNoRows is returned by Scan when QueryRow doesn't return a row. In such a case, QueryRow returns a placeholder Row value that defers this error until a Scan.
 
 当执行QueryRow查询时，如果没法返回一行，则返回ErrNoRows。
@@ -20,13 +21,15 @@ error只处理一次。
 个人理解，日志最后在顶层处理，不要在最底层的DAO层处理。所以相关的error要往上抛。
 但是不应该让普通用户直接看到底层的错误信息，所以除了记录日志之外，还要提供一种面向最终用户的错误信息提示。
 
-#3、问题的转化
+4、问题的转化
+=====
 实际上是转为
 问题：errNoRows作为error，肯定是要往上抛，抛完之后，调用者接收的error是否还是sql.ErrNoRows？
 
-#4、问题的测试与解答
-##4.1 准备测试用的数据库
-###4.1.1拟用Postgres数据库，基于Docker部署 
+5、问题的测试与解答
+=====
+##5.1 准备测试用的数据库
+###5.1.1拟用Postgres数据库，基于Docker部署 
 ####(1)拉取postgres Docker镜像
 $ docker pull postgres
 ####(2) 通过Docker运行Postgres数据库，postgres的密码是Greek#007
@@ -41,7 +44,7 @@ Type "help" for help.
 
 postgres=# 
 
-###4.1.2 greek数据库
+###5.1.2 greek数据库
 ####（1）通过psql运行data目录中的install.sq脚本，创建数据库greek和数据库用户greek，greek用户的密码是Greek#007，为用户greek授予数据库greek的完全权限。
 install.sql脚本
 drop database greek;
@@ -74,11 +77,11 @@ create table posts(
         author varchar(255)
 );
 一个简单的表，id是自动生成的作者编号，content表示贴子的内容，author表示作者。
-###4.1.3、准备数据表中的数据
+###5.1.3、准备数据表中的数据
 在dataManagement目录中，构建了一个简单的REST的Web服务，用CRUD函数包裹一个Web服务接口，并通过JSON格式来传输数据。这个项目用于管理数据库的表数据。
 
 
-##4.2测试问题一
+##5.2测试问题一
 sql.errNoRows肯定是往上抛的，日志只记一次，关键是往上抛之后，errNoRows的信息能否保留而不失真。
 在目录testdatabase目录中，项目里查一个不存在的id=100，
 sql: no rows in result set
@@ -96,7 +99,7 @@ true
 
 说明将sql.errNoRows往上抛可以保留error的相关信息，如果在底层是sql.errNoRows，往上抛后也同样是sql.errNoRows。
 
-##4.3 问题二，既然往上抛后依然能保留sql.errNoRows属性，还有没有必要对sql.errNoRows进行Wrap。
+##5.3 问题二，既然往上抛后依然能保留sql.errNoRows属性，还有没有必要对sql.errNoRows进行Wrap。
 答案是，不进行Wrap也可以。但缺少一些必要的信息，某些场景用，某些场景不用。由于Db.QueryRow不存在panic的问题，所以不需要从panic中recover，因此只需要向包的调用者返回error。
 但是如果要附带其它信息，可以用结构体
 type AppError struct {
